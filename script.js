@@ -11,6 +11,10 @@ function Book(title,author,page,readStatus){
     this.readStatus = readStatus;
 }
 
+Book.prototype.toggleRead = function() {
+    this.readStatus = !this.readStatus
+}
+
 let myLibrary = [
     new Book('The Seven Husbands of Evelyn Hugo', 'Taylor Jenkins', 134, 'Yes'),
     new Book('The House in the Cerulean Sea', 'T.J. Klune', 203, 'Yes'),
@@ -41,6 +45,10 @@ headers.forEach(headerText => {
     th.textContent = headerText.charAt(0).toLocaleUpperCase() + headerText.slice(1);
     headerRow.appendChild(th);
 });
+
+let actionTh = document.createElement('th');
+actionTh.textContent = "Actions"
+headerRow.appendChild(actionTh)
 tableHead.appendChild(headerRow);
 table.appendChild(tableHead);
 
@@ -56,6 +64,39 @@ myLibrary.forEach(Book => {
         td.textContent = value;
         row.appendChild(td);
     })
+
+    let actionTd = document.createElement('td')
+    // let deleteSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>delete</title><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>';
+    
+    let changeBtn = document.createElement('button');
+    let deleteBtn = document.createElement('button');
+    deleteBtn.className.add
+    
+    deleteBtn.textContent = 'Delete'
+    changeBtn.textContent = 'Change'
+
+    tableContainer.addEventListener('click',(e) => {
+        const id = e.target.ParentElement.id;
+        if(deleteBtn){
+            const index = myLibrary.findIndex((book)=> book.id === id);
+            if(index !== -1){
+                myLibrary.splice(index, 1);
+                DisplayBook();
+            }
+        }
+
+        if (changeBtn){
+            const togBook = myLibrary.find((book) => book.id === id);
+            if(togBook){
+                togBook.toggleRead();
+                DisplayBook();
+            }
+        }
+    })
+
+    actionTd.appendChild(deleteBtn);
+    actionTd.appendChild(changeBtn);
+    row.appendChild(actionTd)
     
     tableBody.appendChild(row)
 });
@@ -109,6 +150,8 @@ confirmBtn.addEventListener('click', (event) => {
 
     
 })
+const authorBook = document.querySelector('bookAuthor')
+console.log(authorBook.dataset.name);
 
 
 
