@@ -26,7 +26,11 @@ function createBook(title,author,pages,readStatus){
 // DOM Section
 
 function DisplayBook() {
+    const tableContainer = document.getElementById('tableContainer');
+    tableContainer.innerHTML = '';
+
     let table = document.createElement('table');
+
 
 let tableHead =  document.createElement('thead')
 let headerRow =  document.createElement('tr');
@@ -38,12 +42,13 @@ headers.forEach(headerText => {
     headerRow.appendChild(th);
 });
 tableHead.appendChild(headerRow);
+table.appendChild(tableHead);
+
 
 
 // Table Data rows 
 
 let tableBody = document.createElement('tbody');
-
 myLibrary.forEach(Book => {
     let row = document.createElement('tr');
     Object.values(Book).forEach(value =>{
@@ -56,47 +61,55 @@ myLibrary.forEach(Book => {
 });
 
 table.appendChild(tableBody)
-table.appendChild(tableHead)
-document.body.appendChild(table);
+
+tableContainer.appendChild(table);
+document.body.appendChild(tableContainer)
 }
 DisplayBook();
+
 
 
 const dialog =  document.querySelector('dialog');
 const addNewBookBtn =  document.querySelector('button');
 const confirmBtn =  document.querySelector('#confirmBtn');
-const title = document.getElementById('bookTitle');
-const page = document.getElementById('pages');
-const author = document.getElementById('bookAuthor')
-// const readStatus = document.querySelectorAll('input[name="readStatus"]');
-const output = document.querySelector('output')
 
 addNewBookBtn.addEventListener('click', () =>{
     dialog.showModal();
 })
 
-dialog.addEventListener("close", (e) => {
-    output.value = 
-    dialog.returnValue === "default" ? "No return value" : `Read Status: ${dialog.returnValue}.`;
-})
+// dialog.addEventListener("close", (e) => {
+    
+// })
 
 confirmBtn.addEventListener('click', (event) => {
     event.preventDefault(); //form data will not be sent in a server
-    dialog.close();
+
+    const titleInput = document.getElementById('bookTitle').value;
+    const pageInput = document.getElementById('pages').value;
+    const authorInput = document.getElementById('bookAuthor').value;
+    const readStatusInput = document.querySelector('input[name="readStatus"]:checked').value;
+
+    if( authorInput && titleInput && authorInput){
+        myLibrary.push({
+            title: titleInput,
+            author: authorInput,
+            page: pageInput,
+            readStatus: readStatusInput
+        });
+        
+        DisplayBook();
+        
+
+        dialog.close();
+
+        document.getElementById('bookTitle').value = "";
+        document.getElementById('pages').value = "";
+        document.getElementById('bookAuthor').value = "";
+    }
+
+    
 })
 
-
-
-// Form Creation 
-
-// const form = document.createElement('form');
-//  form.action = '#';
-//  form.method = 'post';
-
-// // Title
-// const titleLabel =  document.createElement('label');
-// titleLabel.htmlFor = 'title'
-// titleLabel.textContent = 'Title: ',
 
 
 
